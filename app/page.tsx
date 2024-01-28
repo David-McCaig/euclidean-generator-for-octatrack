@@ -194,7 +194,7 @@ export default function Home() {
   }
 
   // Example usage
-  const hits = 7;
+  const hits = 5;
   const length = 16;
   const result = createEuclideanRhythm(hits, length);
 
