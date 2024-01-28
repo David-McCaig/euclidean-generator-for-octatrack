@@ -1,6 +1,5 @@
 import TrigButton from "./components/trigButton";
-import Image from "next/image";
-import octatrack from "../public/elektron_octatrack_mkii-top_e0e0e0 copy 3.webp";
+import OctaTrack from "./components/octatrack";
 
 interface MicroTiming {
   offSetDecimal: number;
@@ -231,13 +230,7 @@ export default function Home() {
   return (
     <div className="flex w-full h-screen justify-center items-end pb-24">
       <div className="flex flex-col items-start justify-center">
-        <Image
-          className="rounded-t-md"
-          src={octatrack}
-          alt="Elektron Octatrack"
-          width={1200}
-          height={1200}
-        />
+      <OctaTrack/>
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
           {trigsArray.map((trig, i) => (
             <TrigButton
