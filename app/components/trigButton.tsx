@@ -18,11 +18,11 @@ const TrigButton: React.FC<TrigButtonProps> = ({
   border,
   microTiming
 }) => {
-    console.log(microTiming)
+
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <div className="w-16 h-16 bg-black rounded-md flex justify-center items-center">
+        <div className="w-16 h-16 bg-black rounded-md flex justify-center items-center cursor-default">
           <div
             className={`w-14 h-14 m-0 bg-black ${border} ${
               result === "red-600" ? "border-red-600" : "border-slate-200"
