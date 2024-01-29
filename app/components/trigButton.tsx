@@ -19,10 +19,17 @@ const TrigButton: React.FC<TrigButtonProps> = ({
   microTiming
 }) => {
 
+  function mapToRange(number:number) {
+    if (number <= 16) {
+        return number;
+    }
+    return (number - 1) % 16 + 1;
+}
+
   return (
     <HoverCard>
       <HoverCardTrigger>
-        <div className="w-16 h-16 bg-black rounded-md flex justify-center items-center cursor-default">
+        <div className="w-[3.75rem] h-[3.75rem] bg-black rounded-md flex justify-center items-center cursor-default">
           <div
             className={`w-14 h-14 m-0 bg-black ${border} ${
               result === "red-600" ? "border-red-600" : "border-slate-200"
@@ -38,7 +45,7 @@ const TrigButton: React.FC<TrigButtonProps> = ({
                   result === "red-600" ? "text-red-600" : "text-slate-200"
                 }`}
               >
-                {trig}
+                {mapToRange(trig)}
               </p>
             </div>
           </div>

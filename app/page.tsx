@@ -1,9 +1,9 @@
-'use client'
+"use client";
 import TrigButton from "./components/trigButton";
 import OctaTrack from "./components/octatrack";
 import TrigInputForm from "./components/trigInputForm";
+import PageButton from "./components/pageButton";
 import { useEffect, useState } from "react";
-
 
 interface MicroTiming {
   offSetDecimal: number;
@@ -11,13 +11,13 @@ interface MicroTiming {
 }
 
 export default function Home() {
+  const [numberOfHits, setNumberOfHits] = useState(0);
+  const [patternLength, setPatternLength] = useState(0);
+  const [error, setError] = useState(false);
+  const [result, setResult] = useState<any[]>([]);
 
-  const [numberOfHits, setNumberOfHits] = useState(0)
-  const [patternLength, setPatternLength] = useState(0)
-  const [error, setError] = useState(false)
-  const [result, setResult] = useState<any[]>([]) 
-
-
+  const [changePageStart, setChangePageStart] = useState(0);
+  const [changePageEnd, setChangePageEnd] = useState(16);
 
   // Method to compare which one is closer
   function getClosestValue(val1: number, val2: number, target: number): number {
@@ -27,7 +27,6 @@ export default function Home() {
   // Example usage
 
   useEffect(() => {
-
     const microTimingObject: MicroTiming[] = [
       {
         offSetDecimal: 0.02,
@@ -122,59 +121,59 @@ export default function Home() {
         offSetFraction: "23/28",
       },
     ];
-  
+
     const findClosestMicroTimingDecimalforOctatrack = (
       microTimingArray: MicroTiming[],
       target: number
     ): number => {
       let arr = microTimingArray.map((micro) => micro.offSetDecimal);
-  
+
       let n = arr.length;
-  
+
       // Corner cases
       if (target <= arr[0]) return arr[0];
       if (target >= arr[n - 1]) return arr[n - 1];
-  
+
       // Doing binary search
       let i = 0,
         j = n,
         mid = 0;
       while (i < j) {
         mid = Math.floor((i + j) / 2);
-  
+
         if (arr[mid] == target) return arr[mid];
-  
+
         // If target is less than array element, then search in the left
         if (target < arr[mid]) {
           // If target is greater than the previous to mid, return the closest of two
           if (mid > 0 && target > arr[mid - 1])
             return getClosestValue(arr[mid - 1], arr[mid], target);
-  
+
           // Repeat for the left half
           j = mid;
         } else {
           if (mid < n - 1 && target < arr[mid + 1])
             return getClosestValue(arr[mid], arr[mid + 1], target);
-  
+
           i = mid + 1; // update i
         }
       }
-  
+
       // Only single element left after the search
       return arr[mid];
     };
 
     function createEuclideanRhythm(hits: number, length: number) {
       if (hits > length) {
-        setError(true)
-       return
+        setError(true);
+        return;
       }
-      setError(false)
-  
+      setError(false);
+
       let hitPositions: { hit: number; micro: string }[] = [];
       let lastPosition = 1.0;
       const gap = (length - hits) / hits;
-  
+
       for (let i = 0; i < hits; i++) {
         let parts = lastPosition.toString().split(".");
         let hit = parts[0];
@@ -182,16 +181,16 @@ export default function Home() {
           typeof parts[1] === "undefined"
             ? "0"
             : parseFloat("." + parts[1].slice(0, 2));
-  
+
         const fractionOffSet = findClosestMicroTimingDecimalforOctatrack(
           microTimingObject,
           offSet
         );
-  
+
         const findFraction = microTimingObject.find((tes) => {
           return tes.offSetDecimal === fractionOffSet;
         });
-  
+
         hitPositions = [
           ...hitPositions,
           {
@@ -204,21 +203,36 @@ export default function Home() {
         ];
         lastPosition += gap + 1;
       }
-  
+
       return hitPositions;
     }
 
     setResult(createEuclideanRhythm(numberOfHits, patternLength) || []);
-  },[numberOfHits, patternLength])
+  }, [numberOfHits, patternLength]);
 
-
-
-
-  const trigsArray = Array.from(new Set(Array.from({ length: 64 }, (_, i) => i + 1))); 
-  
+  const trigsArray = Array.from(
+    new Set(Array.from({ length: 64 }, (_, i) => i + 1))
+  );
 
   const addSquareToTrigOneFiveNineThirteen = (trig: number): string => {
-    if (trig === 1 || trig === 5 || trig === 9 || trig === 13) {
+    if (
+      trig === 1 ||
+      trig === 5 ||
+      trig === 9 ||
+      trig === 13 ||
+      trig === 17 ||
+      trig === 21 ||
+      trig === 25 ||
+      trig === 29 ||
+      trig === 33 ||
+      trig === 37 ||
+      trig === 41 ||
+      trig === 45 ||
+      trig === 49 ||
+      trig === 53 ||
+      trig === 57 ||
+      trig === 61
+    ) {
       return "border";
     } else {
       return "";
@@ -246,12 +260,22 @@ export default function Home() {
   };
 
   const handleNumberOfHitsData = (data: number) => {
-    setNumberOfHits(data)
-  }
+    setNumberOfHits(data);
+  };
 
   const handlePatternLengthData = (data: number) => {
-    setPatternLength(data)
-  }
+    setPatternLength(data);
+  };
+
+  console.log(changePageStart, changePageEnd);
+  const changePage = () => {
+    setChangePageStart(changePageStart + 16);
+    setChangePageEnd(changePageEnd + 16);
+    if (changePageEnd === 64) {
+      setChangePageStart(0);
+      setChangePageEnd(16);
+    }
+  };
 
   return (
     <div className="flex w-full h-screen justify-center items-end pb-24">
@@ -260,11 +284,15 @@ export default function Home() {
           <div className="w-2/4 h-full">
             <h1>How to use</h1>
           </div>
-          <TrigInputForm patternLengthOnInputChange={handlePatternLengthData} numberOfHitsOnInputChange={handleNumberOfHitsData} error={error} />
+          <TrigInputForm
+            patternLengthOnInputChange={handlePatternLengthData}
+            numberOfHitsOnInputChange={handleNumberOfHitsData}
+            error={error}
+          />
         </div>
         <OctaTrack />
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
-          {trigsArray.slice(0,16).map((trig, i) => (
+          {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (
             <TrigButton
               key={i}
               trig={trig}
@@ -273,6 +301,10 @@ export default function Home() {
               microTiming={showMicroTiming(result, trig)}
             />
           ))}
+          <PageButton
+            changePage={changePage}
+            changePageStart={changePageStart}
+          />
         </div>
       </div>
     </div>
