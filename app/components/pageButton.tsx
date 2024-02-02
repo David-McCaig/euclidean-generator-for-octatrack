@@ -7,7 +7,7 @@ interface PageButtonsProps {
 }
 
 function pageButton({ changePage, changePageStart }: PageButtonsProps) {
-  console.log(changePageStart);
+
   const dotArray = [1, 2, 3, 4];
 
   const changePageClick = () => {

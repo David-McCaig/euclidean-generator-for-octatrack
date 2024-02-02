@@ -4,6 +4,7 @@ import OctaTrack from "./components/octatrack";
 import TrigInputForm from "./components/trigInputForm";
 import PageButton from "./components/pageButton";
 import { useEffect, useState } from "react";
+import { parse } from "path";
 
 interface MicroTiming {
   offSetDecimal: number;
@@ -270,6 +271,11 @@ export default function Home() {
   const changePage = () => {
     setChangePageStart(changePageStart + 16);
     setChangePageEnd(changePageEnd + 16);
+
+    if(changePageEnd >= patternLength) {
+      setChangePageStart(0);
+      setChangePageEnd(16);
+    }
     if (changePageEnd === 64) {
       setChangePageStart(0);
       setChangePageEnd(16);
