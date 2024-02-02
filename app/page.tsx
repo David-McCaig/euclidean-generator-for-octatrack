@@ -267,7 +267,6 @@ export default function Home() {
     setPatternLength(data);
   };
 
-  console.log(changePageStart, changePageEnd);
   const changePage = () => {
     setChangePageStart(changePageStart + 16);
     setChangePageEnd(changePageEnd + 16);

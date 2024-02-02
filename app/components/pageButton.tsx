@@ -1,7 +1,13 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 
-function pageButton({ changePage, changePageStart }: any) {
+interface PageButtonsProps {
+  changePage: () => void;
+  changePageStart: number;
+}
+
+function pageButton({ changePage, changePageStart }: PageButtonsProps) {
+  console.log(changePageStart);
   const dotArray = [1, 2, 3, 4];
 
   const changePageClick = () => {
@@ -18,8 +24,6 @@ function pageButton({ changePage, changePageStart }: any) {
       return 4;
     }
   };
-
-  console.log(currentPageSelected(changePageStart));
 
   return (
     <div className="flex-col">
