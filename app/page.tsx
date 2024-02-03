@@ -3,6 +3,7 @@ import TrigButton from "./components/trigButton";
 import OctaTrack from "./components/octatrack";
 import TrigInputForm from "./components/trigInputForm";
 import PageButton from "./components/pageButton";
+import TrackButton from "./components/trackButton";
 import { useEffect, useState } from "react";
 import { parse } from "path";
 
@@ -283,7 +284,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex w-full h-screen justify-center items-end pb-24">
+    <div className="flex w-full h-screen justify-center items-end pb-24 mt-12">
       <div className="flex flex-col items-start justify-center">
         <div className="flex w-full h-full mb-12">
           <div className="w-2/4 h-full">
@@ -295,7 +296,7 @@ export default function Home() {
             error={error}
           />
         </div>
-        <OctaTrack />
+        <OctaTrack ></OctaTrack>
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
           {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (
             <TrigButton

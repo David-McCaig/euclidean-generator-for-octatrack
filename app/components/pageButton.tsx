@@ -29,20 +29,18 @@ function pageButton({ changePage, changePageStart }: PageButtonsProps) {
     <div className="flex-col">
       <p></p>
       <div className="flex gap-2">
-        {dotArray.map((dot) => (
-          <>
+        {dotArray.map((dot,i) => (
+          <div key={i}>
             {currentPageSelected(changePageStart) === dot ? (
               <div
-                key={dot}
                 className="rounded-full w-3 h-3 bg-red-600 mb-2 "
               ></div>
             ) : (
               <div
-                key={dot}
                 className="rounded-full w-3 h-3 bg-red-400 mb-2 "
               ></div>
             )}
-          </>
+          </div>
         ))}
       </div>
       <Button className="bg-black" onClick={changePageClick}>
