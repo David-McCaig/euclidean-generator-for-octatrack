@@ -14,7 +14,7 @@ interface MicroTiming {
 
 export default function Home() {
   const [numberOfHits, setNumberOfHits] = useState(0);
-  const [patternLength, setPatternLength] = useState(0);
+  const [patternLength, setPatternLength] = useState(16);
   const [error, setError] = useState(false);
   const [result, setResult] = useState<any[]>([]);
 
@@ -30,6 +30,10 @@ export default function Home() {
 
   useEffect(() => {
     const microTimingObject: MicroTiming[] = [
+      {
+        offSetDecimal: 0,
+        offSetFraction: "0",
+      },
       {
         offSetDecimal: 0.02,
         offSetFraction: "1/384",
@@ -294,9 +298,13 @@ export default function Home() {
             patternLengthOnInputChange={handlePatternLengthData}
             numberOfHitsOnInputChange={handleNumberOfHitsData}
             error={error}
+            numberOfHits={numberOfHits}
+            setNumberOfHits={setNumberOfHits}
+            patternLength={patternLength}
+            setPatternLength={setPatternLength}
           />
         </div>
-        <OctaTrack ></OctaTrack>
+        <OctaTrack setNumberOfHits={setNumberOfHits} numberOfHits={numberOfHits} setPatternLength={setPatternLength} patternLength={patternLength} setChangePageStart={setChangePageStart} setChangePageEnd={setChangePageEnd} ></OctaTrack>
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
           {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (
             <TrigButton

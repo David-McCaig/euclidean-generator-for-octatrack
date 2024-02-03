@@ -6,10 +6,11 @@ function TrigInputForm({
   numberOfHitsOnInputChange,
   patternLengthOnInputChange,
   error,
+  numberOfHits,
+  setNumberOfHits,
+  patternLength,
+  setPatternLength,
 }: any) {
-  const [numberOfHits, setNumberOfHits] = useState(0);
-  const [patternLength, setPatternLength] = useState(0);
-
   const numberOfHitsHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumberOfHits(Number(e.target.value));
     numberOfHitsOnInputChange(e.target.value);
