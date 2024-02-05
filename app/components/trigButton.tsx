@@ -16,7 +16,6 @@ const TrigButton: React.FC<TrigButtonProps> = ({
   trig,
   result,
   border,
-  microTiming
 }) => {
 
   function mapToRange(number:number) {
@@ -27,8 +26,6 @@ const TrigButton: React.FC<TrigButtonProps> = ({
 }
 
   return (
-    <HoverCard>
-      <HoverCardTrigger>
         <div className="w-[3.75rem] h-[3.75rem] bg-black rounded-md flex justify-center items-center cursor-default">
           <div
             className={`w-14 h-14 m-0 bg-black ${border} ${
@@ -50,13 +47,6 @@ const TrigButton: React.FC<TrigButtonProps> = ({
             </div>
           </div>
         </div>
-        {microTiming === undefined ? <></> :
-        <HoverCardContent>
-           <p>Trig: {trig}</p> 
-           <p>Micro Timing: {microTiming?.micro}</p> 
-        </HoverCardContent>}
-      </HoverCardTrigger>
-    </HoverCard>
   );
 };
 
