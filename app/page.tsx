@@ -3,9 +3,16 @@ import TrigButton from "./components/trigButton";
 import OctaTrack from "./components/octatrack";
 import TrigInputForm from "./components/trigInputForm";
 import PageButton from "./components/pageButton";
+import * as Tone from "tone/build/esm/index";
+
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const kick = new Tone.Player("/bd.wav").toDestination();
+  const highat = new Tone.Player("/ch.wav").toDestination();
+  const clap = new Tone.Player("/clap.wav").toDestination();
+  let test = "";
+
   const trackButtonObject = [
     {
       track: 1,
@@ -14,7 +21,10 @@ export default function Home() {
       trackSelected: true,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      note: "C4",
+      sample: kick,
+      timing: 0,
     },
     {
       track: 2,
@@ -23,7 +33,10 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      note: "A1",
+      sample: clap,
+      timing: 0.00001,
     },
     {
       track: 3,
@@ -32,7 +45,9 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      sample: highat,
+      timing: 0.00002,
     },
     {
       track: 4,
@@ -41,7 +56,9 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      sample: test,
+      timing: 0.00003,
     },
     {
       track: 5,
@@ -50,7 +67,9 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      sample: test,
+      timing: 0.00004,
     },
     {
       track: 6,
@@ -59,7 +78,9 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      sample: test,
+      timing: 0.00005,
     },
     {
       track: 7,
@@ -68,7 +89,9 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      sample: test,
+      timing: 0.00006,
     },
     {
       track: 8,
@@ -77,7 +100,9 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array.from({ length: 64 }, () => 0),
+      trigsArray: [],
+      sample: clap,
+      timing: 0.00007,
     },
   ];
   const [numberOfHits, setNumberOfHits] = useState(0);
@@ -110,7 +135,6 @@ export default function Home() {
 
     return newArray;
   };
-  console.log(numberOfHits, patternLength);
   useEffect(() => {
     const getEuclideanRythem = createEuclideanRhythm(
       numberOfHits,
@@ -135,7 +159,7 @@ export default function Home() {
   }, [numberOfHits, patternLength]);
 
   const trigsArray = Array.from(
-    new Set(Array.from({ length: 64 }, (_, i) => i + 1))
+    new Set(Array.from({ length: patternLength }, (_, i) => i + 1))
   );
 
   const addSquareToTrigOneFiveNineThirteen = (trig: number): string => {
@@ -167,7 +191,6 @@ export default function Home() {
     const findTrack = trackSelected?.find((track) => track.trackSelected);
 
     const trigsArray = findTrack?.trigsArray;
-    console.log(i);
     if (trigsArray?.[i] === 1) {
       return "red-600";
     } else {
@@ -197,8 +220,69 @@ export default function Home() {
     }
   };
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [tempo, setTempo] = useState(120); // Initial tempo
+
+  const playSequencer = () => {
+    Tone.Transport.start();
+    setIsPlaying(true);
+  };
+
+  useEffect(() => {
+    // Function to play the sequencer
+    if (isPlaying) {
+      // Stop any existing transport
+      Tone.Transport.cancel();
+
+      // Tone.Transport.stop();
+
+      // Iterate over each track
+      trackSelected.forEach((track) => {
+        const { trigsArray, sample } = track;
+
+        // Create a sequence for each track
+        const sequence = new Tone.Sequence(
+          (time, value) => {
+            if (value === 1) {
+              // Trigger the sample at the correct time
+              (sample as Tone.Player).start(time + track.timing);
+            }
+          },
+          trigsArray,
+          "16n"
+        ).start(0); // Start the sequence at time 0
+
+        // Set the loop to loop indefinitely
+        sequence.loop = true;
+      });
+
+      // Set the BPM
+      // Tone.Transport.bpm.value = tempo;
+
+      // Start the Transport
+      Tone.Transport.start();
+      setIsPlaying(true);
+    }
+  }, [isPlaying, trackSelected]);
+
+  // Function to stop the sequencer
+  function stopSequencer() {
+    Tone.Transport.stop();
+    setIsPlaying(false);
+  }
+
+  // Function to handle tempo change
+  const handleTempoChange = (event: any) => {
+    const newTempo = parseInt(event.target.value);
+    setTempo(newTempo);
+    if (isPlaying) {
+      Tone.Transport.bpm.value = newTempo;
+    }
+  };
+
   return (
     <div className="flex w-full h-screen justify-center items-end pb-24 mt-12">
+      {/* <button onClick={startToneAudioContext}>Start Audio</button> */}
       <div className="flex flex-col items-start justify-center">
         <div className="flex w-full h-full mb-12">
           <div className="w-2/4 h-full">
@@ -223,6 +307,8 @@ export default function Home() {
           patternLength={patternLength}
           setChangePageStart={setChangePageStart}
           setChangePageEnd={setChangePageEnd}
+          playSequencer={playSequencer}
+          stopSequencer={stopSequencer}
         ></OctaTrack>
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
           {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (
@@ -237,6 +323,25 @@ export default function Home() {
             changePage={changePage}
             changePageStart={changePageStart}
           />
+        </div>
+      </div>
+
+      <div>
+        <h1>Drum Machine</h1>
+        <div>
+          {/* {isPlaying ? (
+            <button onClick={stopSequencer}>Stop</button>
+          ) : (
+            <button onClick={playSequencer}>Play</button>
+          )} */}
+          <input
+            type="number"
+            value={tempo}
+            onChange={handleTempoChange}
+            min="60"
+            max="300"
+          />
+          <label htmlFor="tempo">Tempo (BPM): </label>
         </div>
       </div>
     </div>
