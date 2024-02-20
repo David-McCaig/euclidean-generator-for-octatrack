@@ -22,6 +22,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       note: "C4",
       sample: kick,
       timing: 0,
@@ -34,6 +35,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       note: "A1",
       sample: clap,
       timing: 0.00001,
@@ -46,6 +48,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       sample: highat,
       timing: 0.00002,
     },
@@ -57,6 +60,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       sample: test,
       timing: 0.00003,
     },
@@ -68,6 +72,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       sample: test,
       timing: 0.00004,
     },
@@ -79,6 +84,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       sample: test,
       timing: 0.00005,
     },
@@ -90,6 +96,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       sample: test,
       timing: 0.00006,
     },
@@ -101,6 +108,7 @@ export default function Home() {
       numberOfTrigs: 0,
       patternLength: 16,
       trigsArray: [],
+      offSetArray: [0],
       sample: clap,
       timing: 0.00007,
     },
@@ -272,14 +280,36 @@ export default function Home() {
   }
 
   // Function to handle tempo change
-  const handleTempoChange = (event: any) => {
+  const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTempo = parseInt(event.target.value);
     setTempo(newTempo);
     if (isPlaying) {
       Tone.Transport.bpm.value = newTempo;
     }
-  };
+  };  
 
+  const sliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const findTrack = trackSelected?.find((track,) => track.trackSelected);
+   ///how to track if number is increasing or decreasing. Create an arraywhich records the offset numbers. 
+    const offSetArray = (arr:any) => [...arr.slice(arr.length - 1), ...arr.slice(0, arr.length - 1)];
+      
+    const newTrigsArray = offSetArray(findTrack?.trigsArray);
+   
+    const getOffSetArray = findTrack?.offSetArray.map((num:number) => num ) ?? [];
+
+    const newTrackSelected = trackSelected.map((track: any) => {
+      return findTrack?.track === track.track
+        ? {
+            ...track,
+            trigsArray: newTrigsArray,
+            offSetArray: [...getOffSetArray, e],
+          }
+        : track;
+    });
+    setTrackSelected(newTrackSelected);
+  }
+  
   return (
     <div className="flex w-full h-screen justify-center items-end pb-24 mt-12">
       {/* <button onClick={startToneAudioContext}>Start Audio</button> */}
@@ -296,6 +326,7 @@ export default function Home() {
             setNumberOfHits={setNumberOfHits}
             patternLength={patternLength}
             setPatternLength={setPatternLength}
+            offSetValue={sliderChange}
           />
         </div>
         <OctaTrack
