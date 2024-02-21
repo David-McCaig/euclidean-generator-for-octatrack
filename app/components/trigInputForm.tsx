@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -19,10 +19,12 @@ function TrigInputForm({
   setNumberOfHits,
   patternLength,
   setPatternLength,
-  offSetValue
+  offSetValue,
+  setOffSet,
+  offSet,
 }: any) {
 
-  const [offSet, setOffSet] = useState(0);
+  // const [offSet, setOffSet] = useState(0);
 
   const numberOfHitsHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumberOfHits(Number(e.target.value));
@@ -41,6 +43,10 @@ function TrigInputForm({
     setOffSet(e[0]);
     offSetValue(e[0])
   }
+
+  useEffect(() => {
+
+  },[offSet,numberOfHits])
 
   return (
     <Card className="w-2/4 ">

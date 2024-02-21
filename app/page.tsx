@@ -6,6 +6,7 @@ import PageButton from "./components/pageButton";
 import * as Tone from "tone/build/esm/index";
 
 import { useEffect, useState } from "react";
+import { get } from "http";
 
 export default function Home() {
   const kick = new Tone.Player("/bd.wav").toDestination();
@@ -115,6 +116,8 @@ export default function Home() {
   ];
   const [numberOfHits, setNumberOfHits] = useState(0);
   const [patternLength, setPatternLength] = useState(16);
+  const [offSet, setOffSet] = useState(0);
+
   const [error, setError] = useState(false);
 
   const [changePageStart, setChangePageStart] = useState(0);
@@ -152,13 +155,21 @@ export default function Home() {
     const findeSelectedTrack = trackSelected?.find(
       (track) => track.trackSelected
     );
+
+    const updateTrigsArrayIfnoOffSet = (arr:any) => {
+
+      if(arr.length === 1) {
+
+      }
+    }
+
     const newTrackSelected = trackSelected.map((track: any) => {
       return findeSelectedTrack?.track === track.track
         ? {
             ...track,
             numberOfTrigs: numberOfHits,
             patternLength: patternLength,
-            trigsArray: getEuclideanRythem,
+            trigsArray:  getEuclideanRythem,
           }
         : track;
     });
@@ -286,30 +297,39 @@ export default function Home() {
     if (isPlaying) {
       Tone.Transport.bpm.value = newTempo;
     }
-  };  
+  };
 
   const sliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    
-    const findTrack = trackSelected?.find((track,) => track.trackSelected);
-   ///how to track if number is increasing or decreasing. Create an arraywhich records the offset numbers. 
-    const offSetArray = (arr:any) => [...arr.slice(arr.length - 1), ...arr.slice(0, arr.length - 1)];
-      
-    const newTrigsArray = offSetArray(findTrack?.trigsArray);
-   
-    const getOffSetArray = findTrack?.offSetArray.map((num:number) => num ) ?? [];
+    const findTrack = trackSelected?.find((track) => track.trackSelected);
+    ///how to track if number is increasing or decreasing. Create an arraywhich records the offset numbers.
+    const offSetArray = (arr: any) => [
+      ...arr.slice(arr.length - 1),
+      ...arr.slice(0, arr.length - 1),
+    ];
 
+    const newTrigsArray = offSetArray(findTrack?.trigsArray);
+
+    const getOffSetArray =
+      findTrack?.offSetArray.map((num: number) => num) ?? [];
+
+    const editOffSetArray = (arr: number[]) => {
+      const event: any = e;
+      return event > arr[arr.length - 1]
+        ? [...arr, e]
+        : [...arr.slice(0, arr.length - 1)];
+    };
     const newTrackSelected = trackSelected.map((track: any) => {
       return findTrack?.track === track.track
         ? {
             ...track,
             trigsArray: newTrigsArray,
-            offSetArray: [...getOffSetArray, e],
+            offSetArray: editOffSetArray(getOffSetArray),
           }
         : track;
     });
     setTrackSelected(newTrackSelected);
-  }
-  
+  };
+  console.log(trackSelected);
   return (
     <div className="flex w-full h-screen justify-center items-end pb-24 mt-12">
       {/* <button onClick={startToneAudioContext}>Start Audio</button> */}
@@ -327,6 +347,8 @@ export default function Home() {
             patternLength={patternLength}
             setPatternLength={setPatternLength}
             offSetValue={sliderChange}
+            setOffSet={setOffSet}
+            offSet={offSet}
           />
         </div>
         <OctaTrack
@@ -340,6 +362,8 @@ export default function Home() {
           setChangePageEnd={setChangePageEnd}
           playSequencer={playSequencer}
           stopSequencer={stopSequencer}
+          setOffSet={setOffSet}
+          offSet={offSet}
         ></OctaTrack>
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
           {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (

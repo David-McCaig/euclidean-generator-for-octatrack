@@ -14,6 +14,8 @@ function OctaTrack({
   setTrackSelected,
   playSequencer,
   stopSequencer,
+  setOffSet,
+  offSet,
 }: any) {
   const selectedTrack = (track: any) => {
     return track ? "text-green-400" : "text-red-500";
@@ -31,6 +33,7 @@ function OctaTrack({
     );
     setNumberOfHits(currentTrack[0].numberOfTrigs);
     setPatternLength(currentTrack[0].patternLength);
+    setOffSet(currentTrack[0].offSetArray[currentTrack[0]?.offSetArray?.length - 1]);
     setChangePageStart(0);
     setChangePageEnd(16);
   };
