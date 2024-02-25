@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -44,10 +43,6 @@ function TrigInputForm({
     offSetValue(e[0])
   }
 
-  useEffect(() => {
-
-  },[offSet,numberOfHits])
-
   return (
     <Card className="w-2/4 ">
       <CardHeader>
@@ -82,7 +77,7 @@ function TrigInputForm({
               )}
             </div>
             <Label htmlFor="name">Trigger offset</Label>
-            <Slider defaultValue={[offSet]} max={16} step={1} onValueChange={(e)=>sliderChange(e)} />
+            <Slider value={[offSet]} max={16} step={1} onValueChange={(e)=>sliderChange(e)} />
             <div className="w-8 h-8 flex items-center justify-center bg-white text-black border-2 rounded-md">{offSet}</div>
           </div>
         </form>

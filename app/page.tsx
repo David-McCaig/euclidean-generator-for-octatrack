@@ -22,7 +22,7 @@ export default function Home() {
       trackSelected: true,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       note: "C4",
       sample: kick,
@@ -35,7 +35,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       note: "A1",
       sample: clap,
@@ -48,7 +48,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       sample: highat,
       timing: 0.00002,
@@ -60,7 +60,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       sample: test,
       timing: 0.00003,
@@ -72,7 +72,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       sample: test,
       timing: 0.00004,
@@ -84,7 +84,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       sample: test,
       timing: 0.00005,
@@ -96,7 +96,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       sample: test,
       timing: 0.00006,
@@ -108,7 +108,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: [],
+      trigsArray: Array(16).fill(0),
       offSetArray: [0],
       sample: clap,
       timing: 0.00007,
@@ -123,6 +123,11 @@ export default function Home() {
   const [changePageStart, setChangePageStart] = useState(0);
   const [changePageEnd, setChangePageEnd] = useState(16);
   const [trackSelected, setTrackSelected] = useState(trackButtonObject);
+
+  // useEffect(() => {
+  //   const findTrack = trackSelected?.find((track) => track.trackSelected);
+  //   setCurrentTrack(findTrack);
+  // }, [trackSelected]);
 
   const createEuclideanRhythm = (hits: number, length: number) => {
     if (hits > length) {
@@ -156,24 +161,39 @@ export default function Home() {
       (track) => track.trackSelected
     );
 
-    const updateTrigsArrayIfnoOffSet = (arr:any) => {
-
-      if(arr.length === 1) {
-
+    const updateTrigsArrayIfnoOffSet = (arr: any) => {
+      if (arr.length === 1) {
       }
+    };
+    //conditional if number of hits does not === number of hits recorded then set offset to 0
+    if (offSet === 0) {
+      const newTrackSelected = trackSelected.map((track: any) => {
+        return findeSelectedTrack?.track === track.track
+          ? {
+              ...track,
+              numberOfTrigs: numberOfHits,
+              patternLength: patternLength,
+              trigsArray: getEuclideanRythem,
+            }
+          : track;
+      });
+      setTrackSelected(newTrackSelected);
+    } else if (numberOfHits !== findeSelectedTrack?.numberOfTrigs || patternLength !== findeSelectedTrack?.patternLength) {
+      const newTrackSelected = trackSelected.map((track: any) => {
+        setOffSet(0);
+        return findeSelectedTrack?.track === track.track
+          ? {
+              ...track,
+              numberOfTrigs: numberOfHits,
+              patternLength: patternLength,
+              trigsArray: getEuclideanRythem,
+              offSetArray: [0],
+            }
+          : track;
+      });
+      setTrackSelected(newTrackSelected);
     }
 
-    const newTrackSelected = trackSelected.map((track: any) => {
-      return findeSelectedTrack?.track === track.track
-        ? {
-            ...track,
-            numberOfTrigs: numberOfHits,
-            patternLength: patternLength,
-            trigsArray:  getEuclideanRythem,
-          }
-        : track;
-    });
-    setTrackSelected(newTrackSelected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfHits, patternLength]);
 
@@ -330,6 +350,7 @@ export default function Home() {
     setTrackSelected(newTrackSelected);
   };
   console.log(trackSelected);
+
   return (
     <div className="flex w-full h-screen justify-center items-end pb-24 mt-12">
       {/* <button onClick={startToneAudioContext}>Start Audio</button> */}
@@ -349,6 +370,7 @@ export default function Home() {
             offSetValue={sliderChange}
             setOffSet={setOffSet}
             offSet={offSet}
+            trackSelected={trackSelected}
           />
         </div>
         <OctaTrack
