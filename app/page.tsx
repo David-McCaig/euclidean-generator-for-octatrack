@@ -201,30 +201,19 @@ export default function Home() {
     new Set(Array.from({ length: patternLength }, (_, i) => i + 1))
   );
 
-  const addSquareToTrigOneFiveNineThirteen = (trig: number): string => {
-    if (
-      trig === 1 ||
-      trig === 5 ||
-      trig === 9 ||
-      trig === 13 ||
-      trig === 17 ||
-      trig === 21 ||
-      trig === 25 ||
-      trig === 29 ||
-      trig === 33 ||
-      trig === 37 ||
-      trig === 41 ||
-      trig === 45 ||
-      trig === 49 ||
-      trig === 53 ||
-      trig === 57 ||
-      trig === 61
-    ) {
+  const addSquareToTrig = (trigSet:number[]) => (trig:number) => {
+    if (trigSet.includes(trig)) {
       return "border";
     } else {
       return "";
     }
   };
+
+  const trigSet = [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61];
+
+  
+  const addSquareBorder = addSquareToTrig(trigSet);
+ 
 
   const printColor = (i: any) => {
     const findTrack = trackSelected?.find((track) => track.trackSelected);
@@ -393,7 +382,7 @@ export default function Home() {
               key={i}
               trig={trig}
               result={printColor(changePageStart + i)}
-              border={addSquareToTrigOneFiveNineThirteen(trig)}
+              border={addSquareBorder(trig)}
             />
           ))}
           <PageButton
