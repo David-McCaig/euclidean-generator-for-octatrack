@@ -341,7 +341,7 @@ export default function Home() {
   console.log(trackSelected);
 
   return (
-    <div className="flex w-full h-screen justify-center items-end pb-24 mt-12">
+    <main className="flex w-full justify-center items-end pb-24 mt-6">
       {/* <button onClick={startToneAudioContext}>Start Audio</button> */}
       <div className="flex flex-col items-start justify-center">
         <div className="flex w-full h-full mb-12">
@@ -410,6 +410,6 @@ export default function Home() {
           <label htmlFor="tempo">Tempo (BPM): </label>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
