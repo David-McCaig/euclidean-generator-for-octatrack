@@ -300,8 +300,9 @@ export default function Home() {
   }
 
   // Function to handle tempo change
-  const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newTempo = parseInt(event.target.value);
+  const handleTempoChange = (event: any) => {
+    console.log(event)
+    const newTempo = parseInt(event);
     setTempo(newTempo);
     if (isPlaying) {
       Tone.Transport.bpm.value = newTempo;
@@ -349,6 +350,8 @@ export default function Home() {
             <h1>How to use</h1>
           </div>
           <TrigInputForm
+            tempo={tempo}
+            setTempo={setTempo}
             patternLengthOnInputChange={handlePatternLengthData}
             numberOfHitsOnInputChange={handleNumberOfHitsData}
             error={error}
@@ -357,6 +360,7 @@ export default function Home() {
             patternLength={patternLength}
             setPatternLength={setPatternLength}
             offSetValue={sliderChange}
+            changeTempo={handleTempoChange}
             setOffSet={setOffSet}
             offSet={offSet}
             trackSelected={trackSelected}

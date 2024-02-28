@@ -21,8 +21,11 @@ function TrigInputForm({
   offSetValue,
   setOffSet,
   offSet,
+  tempo,
+  setTempo,
+  handleTempoChange,
+  changeTempo
 }: any) {
-
   // const [offSet, setOffSet] = useState(0);
 
   const numberOfHitsHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,19 +41,41 @@ function TrigInputForm({
     patternLengthOnInputChange(value);
   };
 
-  const sliderChange = (e:any) => {
+  const sliderChange = (e: any) => {
     setOffSet(e[0]);
-    offSetValue(e[0])
+    offSetValue(e[0]);
+  };
+
+  const tempoChange = (e: any) => { 
+    setTempo(e[0])
+    changeTempo(e[0])
   }
+
+
 
   return (
     <Card className="w-2/4">
-      <CardHeader>
-        <CardTitle>Euclidean Generator</CardTitle>
-        <CardDescription>
-          Add number of Trigs to get Euclidean patterns
-        </CardDescription>
-      </CardHeader>
+      <div className="flex">
+        <CardHeader className="w-2/4">
+          <CardTitle>Euclidean Generator</CardTitle>
+          <CardDescription>
+            Add number of Trigs to get Euclidean patterns
+          </CardDescription>
+        </CardHeader>
+        <div className="w-2/4 flex-col mt-5 pr-6">
+          <Label htmlFor="name" className="h-full">Tempo</Label>
+          <Slider
+            className="mt-2"
+            value={[tempo]}
+            max={260}
+            step={1}
+            onValueChange={(e) => tempoChange(e)}
+          />
+          <div className="w-8 h-8 mt-2 p-4 flex items-center justify-center bg-white text-black border-2 rounded-md">
+            {tempo}
+          </div>
+        </div>
+      </div>
       <CardContent>
         <form>
           <div className="grid w-full items-center gap-4">
@@ -77,8 +102,15 @@ function TrigInputForm({
               )}
             </div>
             <Label htmlFor="name">Trigger offset</Label>
-            <Slider value={[offSet]} max={16} step={1} onValueChange={(e)=>sliderChange(e)} />
-            <div className="w-8 h-8 flex items-center justify-center bg-white text-black border-2 rounded-md">{offSet}</div>
+            <Slider
+              value={[offSet]}
+              max={16}
+              step={1}
+              onValueChange={(e)=> sliderChange(e)}
+            />
+            <div className="w-8 h-8 flex items-center justify-center bg-white text-black border-2 rounded-md">
+              {offSet}
+            </div>
           </div>
         </form>
       </CardContent>
