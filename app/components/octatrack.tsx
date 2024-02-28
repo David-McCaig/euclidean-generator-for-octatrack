@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import octatrackImage from "../../public/elektron_octatrack_mkii-top_e0e0e0 copy 3.webp";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,6 @@ function OctaTrack({
   playSequencer,
   stopSequencer,
   setOffSet,
-  offSet,
 }: any) {
   const selectedTrack = (track: any) => {
     return track ? "text-green-400" : "text-red-500";
@@ -47,7 +45,7 @@ function OctaTrack({
   }
 
   return (
-    <div className="relative">
+    <div className="relative m-auto">
       <Image
         className="rounded-t-md"
         src={octatrackImage}

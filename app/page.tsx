@@ -3,10 +3,12 @@ import TrigButton from "./components/trigButton";
 import OctaTrack from "./components/octatrack";
 import TrigInputForm from "./components/trigInputForm";
 import PageButton from "./components/pageButton";
+import howToCard from "./components/howToCard";
 import * as Tone from "tone/build/esm/index";
 
 import { useEffect, useState } from "react";
 import { get } from "http";
+import HowToCard from "./components/howToCard";
 
 export default function Home() {
   const kick = new Tone.Player("/bd.wav").toDestination();
@@ -345,9 +347,9 @@ export default function Home() {
     <main className="flex w-full justify-center items-end pb-24 mt-6">
       {/* <button onClick={startToneAudioContext}>Start Audio</button> */}
       <div className="flex flex-col items-start justify-center">
-        <div className="flex w-full h-full mb-12">
+        <div className="flex w-full h-full">
           <div className="w-2/4 h-full">
-            <h1>How to use</h1>
+            <HowToCard/>
           </div>
           <TrigInputForm
             tempo={tempo}
@@ -380,7 +382,7 @@ export default function Home() {
           setOffSet={setOffSet}
           offSet={offSet}
         ></OctaTrack>
-        <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4">
+        <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4 m-auto">
           {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (
             <TrigButton
               key={i}
@@ -393,25 +395,6 @@ export default function Home() {
             changePage={changePage}
             changePageStart={changePageStart}
           />
-        </div>
-      </div>
-
-      <div>
-        <h1>Drum Machine</h1>
-        <div>
-          {/* {isPlaying ? (
-            <button onClick={stopSequencer}>Stop</button>
-          ) : (
-            <button onClick={playSequencer}>Play</button>
-          )} */}
-          <input
-            type="number"
-            value={tempo}
-            onChange={handleTempoChange}
-            min="60"
-            max="300"
-          />
-          <label htmlFor="tempo">Tempo (BPM): </label>
         </div>
       </div>
     </main>

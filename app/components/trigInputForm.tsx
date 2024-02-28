@@ -54,7 +54,7 @@ function TrigInputForm({
 
 
   return (
-    <Card className="w-2/4">
+    <Card className="w-2/4 m-6">
       <div className="flex">
         <CardHeader className="w-2/4">
           <CardTitle>Euclidean Generator</CardTitle>
