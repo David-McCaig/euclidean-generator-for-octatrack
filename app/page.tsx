@@ -126,11 +126,6 @@ export default function Home() {
   const [changePageEnd, setChangePageEnd] = useState(16);
   const [trackSelected, setTrackSelected] = useState(trackButtonObject);
 
-  // useEffect(() => {
-  //   const findTrack = trackSelected?.find((track) => track.trackSelected);
-  //   setCurrentTrack(findTrack);
-  // }, [trackSelected]);
-
   const createEuclideanRhythm = (hits: number, length: number) => {
     if (hits > length) {
       setError(true);
@@ -163,10 +158,6 @@ export default function Home() {
       (track) => track.trackSelected
     );
 
-    const updateTrigsArrayIfnoOffSet = (arr: any) => {
-      if (arr.length === 1) {
-      }
-    };
     //conditional if number of hits does not === number of hits recorded then set offset to 0
     if (offSet === 0) {
       const newTrackSelected = trackSelected.map((track: any) => {

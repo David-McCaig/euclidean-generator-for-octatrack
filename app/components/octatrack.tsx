@@ -3,6 +3,34 @@ import React from "react";
 import Image from "next/image";
 import octatrackImage from "../../public/elektron_octatrack_mkii-top_e0e0e0 copy 3.webp";
 import { Button } from "@/components/ui/button";
+import * as Tone from "tone/build/esm/index";
+
+
+interface Track {
+  track: number;
+  PositionLeft: string;
+  positionTop: string;
+  trackSelected: boolean;
+  numberOfTrigs: number;
+  patternLength: number;
+  trigsArray?: number[];
+  offSetArray: number[];
+  note?: string;
+  sample?: string | Tone.Player; // Assuming sample is a string representing a path or identifier
+  timing?: number;
+}
+
+interface OctaTrackProps {
+  setNumberOfHits: (hits: number) => void;
+  setPatternLength: (length: number) => void;
+  setChangePageStart: (start: number) => void;
+  setChangePageEnd: (end: number) => void;
+  trackSelected: Track[];
+  setTrackSelected: React.Dispatch<React.SetStateAction<Track[]>>;
+  playSequencer: () => void;
+  stopSequencer: () => void;
+  setOffSet: (offset: number) => void;
+}
 
 function OctaTrack({
   setNumberOfHits,
@@ -14,13 +42,14 @@ function OctaTrack({
   playSequencer,
   stopSequencer,
   setOffSet,
-}: any) {
-  const selectedTrack = (track: any) => {
+}: OctaTrackProps) {
+  console.log(trackSelected, "trackSelected")
+  const selectedTrack = (track: Track) => {
     return track ? "text-green-400" : "text-red-500";
   };
 
-  const trackonClick = (t: any) => {
-    let newTrackSelected = trackSelected.map((track: any) => {
+  const trackonClick = (t: number) => {
+    let newTrackSelected = trackSelected.map((track: Track) => {
       return t === track.track
         ? { ...track, trackSelected: true }
         : { ...track, trackSelected: false };
@@ -91,7 +120,7 @@ function OctaTrack({
           ></path>
         </svg>
       </Button>
-      {trackSelected.map((button: any, i: any) => (
+      {trackSelected.map((button: any) => (
         <Button
           key={button.track}
           onClick={() => trackonClick(button.track)}
