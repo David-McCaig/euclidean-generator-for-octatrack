@@ -23,7 +23,7 @@ interface TrigInputFormProps {
   offSet: number;
   tempo: number;
   setTempo: React.Dispatch<React.SetStateAction<number>>;
-  changeTempo: (value: number) => void;
+  changeTempo: (value: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TrigInputForm({

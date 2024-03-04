@@ -17,7 +17,6 @@ const TrigButton: React.FC<TrigButtonProps> = ({
   result,
   border,
 }) => {
-console.log(trig)
   function mapToRange(number:number) {
     if (number <= 16) {
         return number;

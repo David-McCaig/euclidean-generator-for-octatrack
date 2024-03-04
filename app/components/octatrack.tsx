@@ -44,7 +44,6 @@ function OctaTrack({
   stopSequencer,
   setOffSet,
 }: OctaTrackProps) {
-  console.log(trackSelected, "trackSelected")
   const selectedTrack = (track: Track) => {
     return track ? "text-green-400" : "text-red-500";
   };

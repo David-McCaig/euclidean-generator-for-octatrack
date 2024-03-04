@@ -7,7 +7,6 @@ import howToCard from "./components/howToCard";
 import * as Tone from "tone/build/esm/index";
 
 import { useEffect, useState } from "react";
-import { get } from "http";
 import HowToCard from "./components/howToCard";
 
 interface Track {
@@ -224,7 +223,7 @@ export default function Home() {
 
   const addSquareBorder = addSquareToTrig(trigSet);
 
-  const printColor = (i: any) => {
+  const printColor = (i: number) => {
     const findTrack = trackSelected?.find((track) => track.trackSelected);
 
     const trigsArray = findTrack?.trigsArray;
@@ -309,9 +308,8 @@ export default function Home() {
   }
 
   // Function to handle tempo change
-  const handleTempoChange = (event: any) => {
-    console.log(event);
-    const newTempo = parseInt(event);
+  const handleTempoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTempo = parseInt(event.target.value);
     setTempo(newTempo);
     if (isPlaying) {
       Tone.Transport.bpm.value = newTempo;
@@ -348,7 +346,6 @@ export default function Home() {
     });
     setTrackSelected(newTrackSelected);
   };
-  console.log(trackSelected);
 
   return (
     <main className="flex w-full justify-center items-end pb-24 mt-6">
