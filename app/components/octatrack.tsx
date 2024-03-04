@@ -30,6 +30,7 @@ interface OctaTrackProps {
   playSequencer: () => void;
   stopSequencer: () => void;
   setOffSet: (offset: number) => void;
+  numberOfHits: number;
 }
 
 function OctaTrack({

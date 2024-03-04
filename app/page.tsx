@@ -10,6 +10,20 @@ import { useEffect, useState } from "react";
 import { get } from "http";
 import HowToCard from "./components/howToCard";
 
+interface Track {
+  track: number;
+  PositionLeft: string;
+  positionTop: string;
+  trackSelected: boolean;
+  numberOfTrigs: number;
+  patternLength: number;
+  trigsArray?: number[];
+  offSetArray: number[];
+  note?: string;
+  sample?: string | Tone.Player; // Assuming sample is a string representing a path or identifier
+  timing?: number;
+}
+
 export default function Home() {
   const kick = new Tone.Player("/bd.wav").toDestination();
   const highat = new Tone.Player("/ch.wav").toDestination();
@@ -24,7 +38,7 @@ export default function Home() {
       trackSelected: true,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       note: "C4",
       sample: kick,
@@ -37,7 +51,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       note: "A1",
       sample: clap,
@@ -50,7 +64,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray:Array(16).fill(0) || [],
       offSetArray: [0],
       sample: highat,
       timing: 0.00002,
@@ -62,7 +76,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       sample: test,
       timing: 0.00003,
@@ -74,7 +88,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       sample: test,
       timing: 0.00004,
@@ -86,7 +100,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       sample: test,
       timing: 0.00005,
@@ -98,7 +112,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       sample: test,
       timing: 0.00006,
@@ -110,7 +124,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray: Array(16).fill(0),
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       sample: clap,
       timing: 0.00007,
@@ -124,7 +138,7 @@ export default function Home() {
 
   const [changePageStart, setChangePageStart] = useState(0);
   const [changePageEnd, setChangePageEnd] = useState(16);
-  const [trackSelected, setTrackSelected] = useState(trackButtonObject);
+  const [trackSelected, setTrackSelected] = useState<Track[]>(trackButtonObject);
 
   const createEuclideanRhythm = (hits: number, length: number) => {
     if (hits > length) {
@@ -266,7 +280,7 @@ export default function Home() {
           (time, value) => {
             if (value === 1) {
               // Trigger the sample at the correct time
-              (sample as Tone.Player).start(time + track.timing);
+              (sample as Tone.Player).start(time + (track.timing ?? 0));
             }
           },
           trigsArray,
@@ -365,13 +379,11 @@ export default function Home() {
           setNumberOfHits={setNumberOfHits}
           numberOfHits={numberOfHits}
           setPatternLength={setPatternLength}
-          patternLength={patternLength}
           setChangePageStart={setChangePageStart}
           setChangePageEnd={setChangePageEnd}
           playSequencer={playSequencer}
           stopSequencer={stopSequencer}
           setOffSet={setOffSet}
-          offSet={offSet}
         ></OctaTrack>
         <div className="gap-2 flex items-start rounded-b-md justify-start w-[1200px] bg-[#5f5f5f] pl-2 pt-4 pb-4 m-auto">
           {trigsArray.slice(changePageStart, changePageEnd).map((trig, i) => (
