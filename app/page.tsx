@@ -24,10 +24,14 @@ interface Track {
 }
 
 export default function Home() {
-  const kick = new Tone.Player("/bd.wav").toDestination();
-  const highat = new Tone.Player("/ch.wav").toDestination();
+  const kick = new Tone.Player("/kick.wav").toDestination();
+  const snare = new Tone.Player("/snare.wav").toDestination();
+  const closedHighat = new Tone.Player("/closedHat.wav").toDestination();
+  const openHighat = new Tone.Player("/openHat.wav").toDestination();
   const clap = new Tone.Player("/clap.wav").toDestination();
-  let test = "";
+  const rimShot = new Tone.Player("/rimShot.wav").toDestination();
+  const tomLow = new Tone.Player("/tomLow.wav").toDestination();
+  const tomMed = new Tone.Player("/tomMed.wav").toDestination();
 
   const trackButtonObject = [
     {
@@ -53,7 +57,7 @@ export default function Home() {
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       note: "A1",
-      sample: clap,
+      sample: snare,
       timing: 0.00001,
     },
     {
@@ -65,7 +69,7 @@ export default function Home() {
       patternLength: 16,
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
-      sample: highat,
+      sample: clap,
       timing: 0.00002,
     },
     {
@@ -77,7 +81,7 @@ export default function Home() {
       patternLength: 16,
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
-      sample: test,
+      sample: closedHighat,
       timing: 0.00003,
     },
     {
@@ -89,7 +93,7 @@ export default function Home() {
       patternLength: 16,
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
-      sample: test,
+      sample: openHighat,
       timing: 0.00004,
     },
     {
@@ -101,7 +105,7 @@ export default function Home() {
       patternLength: 16,
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
-      sample: test,
+      sample: rimShot,
       timing: 0.00005,
     },
     {
@@ -113,7 +117,7 @@ export default function Home() {
       patternLength: 16,
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
-      sample: test,
+      sample: tomLow,
       timing: 0.00006,
     },
     {
@@ -125,7 +129,7 @@ export default function Home() {
       patternLength: 16,
       trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
-      sample: clap,
+      sample: tomMed,
       timing: 0.00007,
     },
   ];
