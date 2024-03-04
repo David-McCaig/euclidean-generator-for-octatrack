@@ -10,6 +10,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 
+interface TrigInputFormProps {
+  numberOfHitsOnInputChange: (value: number) => void;
+  patternLengthOnInputChange: (value: number) => void;
+  error: boolean;
+  numberOfHits: number;
+  setNumberOfHits: React.Dispatch<React.SetStateAction<number>>;
+  patternLength: number;
+  setPatternLength: React.Dispatch<React.SetStateAction<number>>;
+  offSetValue: (value:React.ChangeEvent<HTMLInputElement>) => void;
+  setOffSet: React.Dispatch<React.SetStateAction<number>>;
+  offSet: number;
+  tempo: number;
+  setTempo: React.Dispatch<React.SetStateAction<number>>;
+  changeTempo: (value: number) => void;
+}
+
 function TrigInputForm({
   numberOfHitsOnInputChange,
   patternLengthOnInputChange,
@@ -23,14 +39,13 @@ function TrigInputForm({
   offSet,
   tempo,
   setTempo,
-  handleTempoChange,
   changeTempo
-}: any) {
+}: TrigInputFormProps) {
   // const [offSet, setOffSet] = useState(0);
 
   const numberOfHitsHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumberOfHits(Number(e.target.value));
-    numberOfHitsOnInputChange(e.target.value);
+    numberOfHitsOnInputChange(Number(e.target.value));
   };
 
   const PatternLengthHandleChange = (

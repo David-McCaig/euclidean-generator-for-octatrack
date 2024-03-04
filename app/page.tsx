@@ -64,7 +64,7 @@ export default function Home() {
       trackSelected: false,
       numberOfTrigs: 0,
       patternLength: 16,
-      trigsArray:Array(16).fill(0) || [],
+      trigsArray: Array(16).fill(0) || [],
       offSetArray: [0],
       sample: highat,
       timing: 0.00002,
@@ -138,7 +138,8 @@ export default function Home() {
 
   const [changePageStart, setChangePageStart] = useState(0);
   const [changePageEnd, setChangePageEnd] = useState(16);
-  const [trackSelected, setTrackSelected] = useState<Track[]>(trackButtonObject);
+  const [trackSelected, setTrackSelected] =
+    useState<Track[]>(trackButtonObject);
 
   const createEuclideanRhythm = (hits: number, length: number) => {
     if (hits > length) {
@@ -185,7 +186,10 @@ export default function Home() {
           : track;
       });
       setTrackSelected(newTrackSelected);
-    } else if (numberOfHits !== findeSelectedTrack?.numberOfTrigs || patternLength !== findeSelectedTrack?.patternLength) {
+    } else if (
+      numberOfHits !== findeSelectedTrack?.numberOfTrigs ||
+      patternLength !== findeSelectedTrack?.patternLength
+    ) {
       const newTrackSelected = trackSelected.map((track: any) => {
         setOffSet(0);
         return findeSelectedTrack?.track === track.track
@@ -208,7 +212,7 @@ export default function Home() {
     new Set(Array.from({ length: patternLength }, (_, i) => i + 1))
   );
 
-  const addSquareToTrig = (trigSet:number[]) => (trig:number) => {
+  const addSquareToTrig = (trigSet: number[]) => (trig: number) => {
     if (trigSet.includes(trig)) {
       return "border";
     } else {
@@ -218,9 +222,7 @@ export default function Home() {
 
   const trigSet = [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61];
 
-  
   const addSquareBorder = addSquareToTrig(trigSet);
- 
 
   const printColor = (i: any) => {
     const findTrack = trackSelected?.find((track) => track.trackSelected);
@@ -308,7 +310,7 @@ export default function Home() {
 
   // Function to handle tempo change
   const handleTempoChange = (event: any) => {
-    console.log(event)
+    console.log(event);
     const newTempo = parseInt(event);
     setTempo(newTempo);
     if (isPlaying) {
@@ -354,7 +356,7 @@ export default function Home() {
       <div className="flex flex-col items-start justify-center">
         <div className="flex w-full h-full">
           <div className="w-2/4 h-full">
-            <HowToCard/>
+            <HowToCard />
           </div>
           <TrigInputForm
             tempo={tempo}
@@ -367,10 +369,9 @@ export default function Home() {
             patternLength={patternLength}
             setPatternLength={setPatternLength}
             offSetValue={sliderChange}
-            changeTempo={handleTempoChange}
             setOffSet={setOffSet}
             offSet={offSet}
-            trackSelected={trackSelected}
+            changeTempo={handleTempoChange}
           />
         </div>
         <OctaTrack
