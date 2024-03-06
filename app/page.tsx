@@ -144,28 +144,67 @@ export default function Home() {
   const [trackSelected, setTrackSelected] =
     useState<Track[]>(trackButtonObject);
 
-  const createEuclideanRhythm = (hits: number, length: number) => {
-    if (hits > length) {
+  //   const createEuclideanRhythm = (hits: number, length: number) => {
+  //        if (hits > length || hits < 0 || length < 0) {
+  //     setError(true);
+  //     return;
+  //   }
+  //   setError(false);
+  
+  //     const pattern: number[] = new Array(length || 0).fill(0);
+  
+  //     const bucketSize = Math.floor(length / hits);
+  //     const remainder = length % hits;
+  
+  //     let index = 0;
+  
+  //     for (let i = 0; i < hits; i++) {
+  //         const extra = i < remainder ? 1 : 0;
+  //         index += bucketSize + extra;
+  //         pattern[index % length] = 1;
+  //     }
+  //     console.log(pattern)
+  //     return pattern;
+  // };
+
+  const createEuclideanRhythm = (onNotes: number, totalNotes: number): number[] => {
+             if (onNotes > totalNotes || onNotes < 0 || totalNotes < 0) {
       setError(true);
-      return;
+      return[];
     }
     setError(false);
+    let groups: number[][] = [];
+    for (let i = 0; i < totalNotes; i++) groups.push([Number(i < onNotes)]);
 
-    const hitPositions: number[] = [];
-    let lastPosition = 1.0;
-    const gap = (length - hits) / hits;
+    let l: number;
+    while ((l = groups.length - 1)) {
+        let start = 0,
+            first = groups[0];
+        while (start < l && compareArrays(first, groups[start])) start++;
+        if (start === l) break;
 
-    for (let i = 0; i < hits; i++) {
-      hitPositions.push(Math.floor(lastPosition));
-      lastPosition += gap + 1;
+        let end = l,
+            last = groups[l];
+        while (end > 0 && compareArrays(last, groups[end])) end--;
+        if (end === 0) break;
+
+        let count = Math.min(start, l - end);
+        groups = groups
+            .slice(0, count)
+            .map((group, i) => group.concat(groups[l - i]))
+            .concat(groups.slice(count, -count));
     }
-
-    const newArray = Array.from({ length }, (_, i) =>
-      hitPositions.includes(i + 1) ? 1 : 0
-    );
-
-    return newArray;
+    return ([] as number[]).concat(...groups);
   };
+
+function compareArrays (a:any, b:any) {
+  // TODO: optimize
+  return JSON.stringify(a) === JSON.stringify(b);
+};
+  
+  
+  
+  
   useEffect(() => {
     const getEuclideanRythem = createEuclideanRhythm(
       numberOfHits,
